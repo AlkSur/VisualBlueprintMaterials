@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        // 国内镜像（阿里云优先）
+        maven { url = 'https://maven.aliyun.com/repository/public/' }
+        // Gradle 官方
+        gradlePluginPortal()
+        // Forge 及 Parchment（镜像没有，直连）
+        maven { name = 'MinecraftForge'; url = 'https://maven.minecraftforge.net/' }
+        maven { name = 'ParchmentMC'; url = 'https://maven.parchmentmc.org' }
+        maven { name = 'Jared'; url = 'https://maven.blamejared.com/' }
+    }
+}
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
+rootProject.name = 'VisualBlueprintMaterials'
