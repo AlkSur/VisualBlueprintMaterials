@@ -1,5 +1,7 @@
 # 可视化蓝图材料 (Visual Blueprint Materials)
 
+![封面](cover.png)
+
 ## 开源与商用声明
 本项目基于 MIT 协议开源，由 AlkSur (GitHub) 开发。
 

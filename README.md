@@ -1,5 +1,7 @@
 # Visual Blueprint Materials
 
+![Cover](cover.png)
+
 ## Open Source & Commercial Usage Notice
 This project is open source under the MIT License, authored by AlkSur (GitHub).
 
