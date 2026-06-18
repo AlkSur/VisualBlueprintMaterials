@@ -11,10 +11,9 @@ All codes of this project include AI-assisted development and manual review.
 All final copyrights are held by AlkSur. Unauthorized commercial use is prohibited.
 
 ## Showcase
-<img width="793" height="1075" alt="屏幕截图 2026-06-18 194211" src="https://github.com/user-attachments/assets/b23af63a-cb92-4bdc-bdf8-f3f99629be5c" />
-<img width="579" height="433" alt="屏幕截图 2026-06-18 194147" src="https://github.com/user-attachments/assets/21f5ec65-8382-431d-b2c1-dc8af60724bd" />
 
-
+<img width="872" height="659" alt="屏幕截图 2026-06-18 200040" src="https://github.com/user-attachments/assets/03ce0022-a99c-4f4f-b751-5f496daeb2d0" />
+<img width="741" height="622" alt="屏幕截图 2026-06-18 200028" src="https://github.com/user-attachments/assets/0091cf39-b6ef-4b76-8de0-4a17c1eb0c1a" />
 
 ## Dependencies
 - Minecraft 1.20.1
