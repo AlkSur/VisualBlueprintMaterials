@@ -11,6 +11,10 @@ All codes of this project include AI-assisted development and manual review.
 All final copyrights are held by AlkSur. Unauthorized commercial use is prohibited.
 
 ## Dependencies
+<img width="793" height="1075" alt="屏幕截图 2026-06-18 194211" src="https://github.com/user-attachments/assets/b23af63a-cb92-4bdc-bdf8-f3f99629be5c" />
+
+
+## Dependencies
 - Minecraft 1.20.1
 - Forge 47.x
 - Create 0.5.x / 6.x
