@@ -26,7 +26,7 @@ public class JeiBridge implements IModPlugin {
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return new ResourceLocation("vbm", "jei_bridge");
+        return new ResourceLocation("create-qbp", "jei_bridge");
     }
 
     @Override
@@ -39,12 +39,12 @@ public class JeiBridge implements IModPlugin {
         runtime = null;
     }
 
-    /** Called via reflection from GuiOverlay â€” safe because Class.forName only runs when JEI is loaded */
+    /** Called via reflection from GuiOverlay â€?safe because Class.forName only runs when JEI is loaded */
     public static void showRecipe(ItemStack stack, int key) {
         if (runtime == null) return;
         RecipeIngredientRole role = (key == org.lwjgl.glfw.GLFW.GLFW_KEY_R)
-                ? RecipeIngredientRole.OUTPUT   // R key â†’ how to craft this
-                : RecipeIngredientRole.INPUT;   // U key â†’ what this is used for
+                ? RecipeIngredientRole.OUTPUT   // R key â†?how to craft this
+                : RecipeIngredientRole.INPUT;   // U key â†?what this is used for
         IIngredientType<ItemStack> type = VanillaTypes.ITEM_STACK;
         IFocusFactory focusFactory = runtime.getJeiHelpers().getFocusFactory();
         runtime.getRecipesGui().show(List.of(

@@ -51,7 +51,7 @@ public class ClipboardReader {
 
                 String itemId = icon.getString("id");
                 int count = entry.contains("ItemAmount") ? entry.getInt("ItemAmount") : 1;
-                boolean ignored = entry.contains("Ignored") && entry.getBoolean("Ignored");
+                boolean ignored = false;
                 ResourceLocation rl = ResourceLocation.tryParse(itemId);
                 if (rl == null) continue;
                 var item = BuiltInRegistries.ITEM.get(rl);
@@ -67,16 +67,6 @@ public class ClipboardReader {
             }
         }
         return result;
-    }
-
-    public static void setIgnored(ItemStack clipboard, int pageIdx, int entryIdx, boolean ignored) {
-        CompoundTag tag = clipboard.getTag();
-        if (tag == null || !tag.contains("Pages")) return;
-        if (!(tag.get("Pages") instanceof ListTag pages) || pageIdx >= pages.size()) return;
-        if (!(pages.get(pageIdx) instanceof CompoundTag pg) || !pg.contains("Entries")) return;
-        if (!(pg.get("Entries") instanceof ListTag entries) || entryIdx >= entries.size()) return;
-        if (entries.get(entryIdx) instanceof CompoundTag entry)
-            entry.putBoolean("Ignored", ignored);
     }
 
     public static ItemStack findClipboard(Player player) {

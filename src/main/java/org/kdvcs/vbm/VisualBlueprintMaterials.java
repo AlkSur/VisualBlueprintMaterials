@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 
 @Mod(VisualBlueprintMaterials.MOD_ID)
 public class VisualBlueprintMaterials {
-    public static final String MOD_ID = "vbm";
+    public static final String MOD_ID = "create-qbp";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public VisualBlueprintMaterials() {

@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.kdvcs.vbm.VisualBlueprintMaterials;
 import org.kdvcs.vbm.config.VBMConfig;
 import org.kdvcs.vbm.util.ClipboardReader;
 import org.kdvcs.vbm.util.InventoryCounter;
@@ -67,6 +68,32 @@ public class GuiOverlay {
         if (mc.player == null) { mats = List.of(); return; }
         ItemStack cb = ClipboardReader.findClipboard(mc.player);
         mats = cb.isEmpty() ? List.of() : ClipboardReader.readMaterials(cb);
+        applyIgnored(mc.player);
+    }
+
+    private String blueprintFingerprint(net.minecraft.world.item.ItemStack clipboard) {
+        java.util.List<ClipboardReader.MaterialEntry> all = ClipboardReader.readMaterials(clipboard);
+        StringBuilder sb = new StringBuilder();
+        for (ClipboardReader.MaterialEntry e : all) {
+            sb.append(e.pageIndex).append(',').append(e.entryIndex).append('|');
+        }
+        return Integer.toHexString(sb.toString().hashCode());
+    }
+
+    private void applyIgnored(net.minecraft.world.entity.player.Player player) {
+        net.minecraft.nbt.CompoundTag vbm = player.getPersistentData().getCompound(VisualBlueprintMaterials.MOD_ID);
+        String fp = blueprintFingerprint(ClipboardReader.findClipboard(player));
+        for (ClipboardReader.MaterialEntry e : mats) {
+            String key = "ign_" + fp + '_' + e.pageIndex + '_' + e.entryIndex;
+            e.ignored = vbm.contains(key) && vbm.getBoolean(key);
+        }
+    }
+
+    private void saveIgnored(net.minecraft.world.entity.player.Player player, int page, int entry, boolean ignored) {
+        net.minecraft.nbt.CompoundTag vbm = player.getPersistentData().getCompound(VisualBlueprintMaterials.MOD_ID);
+        String fp = blueprintFingerprint(ClipboardReader.findClipboard(player));
+        vbm.putBoolean("ign_" + fp + '_' + page + '_' + entry, ignored);
+        player.getPersistentData().put(VisualBlueprintMaterials.MOD_ID, vbm);
     }
 
     private int[] btnPos(Screen screen) {
@@ -241,9 +268,7 @@ public class GuiOverlay {
             int ey = listY + i * EH;
             if (mx >= px + 4 && mx <= px + 16 && my >= ey + 1 && my <= ey + 13) {
                 e.ignored = !e.ignored;
-                ItemStack cb = ClipboardReader.findClipboard(Minecraft.getInstance().player);
-                if (cb != null && !cb.isEmpty())
-                    ClipboardReader.setIgnored(cb, e.pageIndex, e.entryIndex, e.ignored);
+                saveIgnored(Minecraft.getInstance().player, e.pageIndex, e.entryIndex, e.ignored);
                 event.setCanceled(true); return;
             }
             if (mx >= px + 18 && mx <= px + PW - 2 && my >= ey && my <= ey + EH) {
