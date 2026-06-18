@@ -10,8 +10,10 @@ Including but not limited to paid integration packs, commercial charging servers
 All codes of this project include AI-assisted development and manual review.
 All final copyrights are held by AlkSur. Unauthorized commercial use is prohibited.
 
-## Dependencies
+## Showcase
 <img width="793" height="1075" alt="屏幕截图 2026-06-18 194211" src="https://github.com/user-attachments/assets/b23af63a-cb92-4bdc-bdf8-f3f99629be5c" />
+<img width="579" height="433" alt="屏幕截图 2026-06-18 194147" src="https://github.com/user-attachments/assets/21f5ec65-8382-431d-b2c1-dc8af60724bd" />
+
 
 
 ## Dependencies
