@@ -2,6 +2,9 @@
 
 ![Cover](cover.png)
 
+## README
+- zh_CN [简体中文](readme/README_CN.md)
+
 ## Open Source & Commercial Usage Notice
 This project is open source under the MIT License, authored by AlkSur (GitHub).
 
