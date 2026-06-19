@@ -3,7 +3,8 @@
 模组英文原名：Visual Material List
 官方中文译名：机械动力：量化蓝图
 
-![封面](cover.png)
+<img width="68" height="55" alt="cover" src="https://github.com/user-attachments/assets/6547c14f-a924-466d-9d43-f33d3e9f0b4b" />
+
 
 ## 开源与商用声明
 本项目基于 MIT 协议开源，由 AlkSur (GitHub) 开发。
