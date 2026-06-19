@@ -1,26 +1,22 @@
+# Copyright & AI Generation Disclosure
 Copyright (c) AlkSur
 
 This project source code and functional logic are independently verified, sorted out and tested by the developer AlkSur with the assistance of AI tools.
 All final copyrights of the project, including manually written code, AI-generated code and AI-optimized reconstructed code, belong exclusively to AlkSur.
 
-All AI-generated content is uniformly bound by the open source agreement of this project, and no part of the code can be split separately for copyright avoidance.
+All AI-generated content is uniformly bound by the complete open source agreement of this project, and no part of the code can be split separately for copyright avoidance.
 The developer assumes full responsibility for the compatibility, safety and functional compliance of all codes.
+Any redistribution, modification or derivative work of this project must retain this full copyright and AI disclosure statement intact, partial deletion or removal is prohibited.
 
-=======================================================================
-
-MIT License
-
+# Base License Terms (Modified MIT with Commercial Restriction)
 Copyright (c) AlkSur
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+in the Software without restriction, subject to the mandatory supplementary commercial usage restrictions listed below:
+Non-commercial rights granted: use, copy, modify, merge, publish, distribute, sublicense for personal study, non-profit server deployment and free modpack inclusion.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice, AI disclosure statement and full license text shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -30,11 +26,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-=======================================================================
-
-===== Supplementary Commercial Usage Restrictions =====
-1. This project is open source under the MIT License, free for personal non-commercial use, academic learning, and non-profit public server deployment.
-2. Any commercial profit behavior is strictly restricted, including but not limited to: selling modified versions of this mod, packaging this mod into paid mod packs, deploying it on commercial recharge servers, using this project's core logic (GUI rendering, mouse interception, UI coordinate offset algorithm) for commercial customization and paid outsourcing services.
+# Supplementary Commercial Usage Restrictions
+1. This project adopts a modified MIT open source framework, only free personal non-commercial use, academic learning, and non-profit public server deployment are allowed.
+2. All commercial profit behaviors are strictly restricted, including but not limited to: selling modified versions of this mod, packaging this mod into paid mod packs, deploying it on commercial recharge servers, using this project's core logic (GUI rendering, mouse interception, UI coordinate offset algorithm) for commercial customization and paid outsourcing services.
 3. All commercial usage, profit dissemination and commercial derivative development must obtain a written commercial authorization officially issued by the original author AlkSur in advance.
-4. Any commercial behavior without valid commercial authorization is regarded as an infringement of copyright. The author has the right to pursue legal liabilities and claim compensation for losses.
+4. Any commercial behavior without valid written commercial authorization is regarded as copyright infringement. The author reserves all rights to pursue legal liabilities and claim compensation for economic losses.
 5. The above restrictions apply to all manually written codes, AI-assisted codes, UI resources, rendering logics and interactive algorithms of this project.
