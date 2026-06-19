@@ -1,4 +1,4 @@
-# 可视化蓝图材料 (Visual Blueprint Materials)
+# 机械动力：量化蓝图 (Visual Blueprint Materials)
 
 模组英文原名：Visual Material List
 官方中文译名：机械动力：量化蓝图
