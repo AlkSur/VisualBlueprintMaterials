@@ -1,6 +1,6 @@
 # Visual Blueprint Materials
-
-![Cover](cover.png)
+Cover
+<img width="68" height="55" alt="cover" src="https://github.com/user-attachments/assets/11315f85-e8fd-45ce-9b4a-7a9af5a2cf3e" />
 
 ## README
 - zh_CN [简体中文](readme/README_CN.md)

@@ -1,6 +1,10 @@
-# 可视化蓝图材料 (Visual Blueprint Materials)
+# 机械动力：量化蓝图 (Visual Blueprint Materials)
 
-![封面](cover.png)
+模组英文原名：Visual Material List
+官方中文译名：机械动力：量化蓝图
+
+<img width="68" height="55" alt="cover" src="https://github.com/user-attachments/assets/6547c14f-a924-466d-9d43-f33d3e9f0b4b" />
+
 
 ## 开源与商用声明
 本项目基于 MIT 协议开源，由 AlkSur (GitHub) 开发。
@@ -32,7 +36,7 @@
 | JEI | ❌ | 15.x（可选，用于 R/U 键配方查询） |
 
 ## 安装
-将 `vbm-{version}.jar` 放入游戏目录 `mods/` 文件夹。
+将 模组文件 放入游戏目录 mods/ 文件夹。
 
 ## 开源协议
 MIT 协议 + 补充商用限制条款。详见 [LICENSE](LICENSE) 与 [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md)。
