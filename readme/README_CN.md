@@ -36,7 +36,7 @@
 | JEI | ❌ | 15.x（可选，用于 R/U 键配方查询） |
 
 ## 安装
-将 `vbm-{version}.jar` 放入游戏目录 `mods/` 文件夹。
+将 模组文件 放入游戏目录 mods/ 文件夹。
 
 ## 开源协议
 MIT 协议 + 补充商用限制条款。详见 [LICENSE](LICENSE) 与 [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md)。
