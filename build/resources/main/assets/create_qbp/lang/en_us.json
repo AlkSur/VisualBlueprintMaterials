@@ -1,0 +1,12 @@
+{
+  "itemGroup.create_qbp": "Visual Blueprint Materials",
+  "gui.create_qbp.no_blueprint": "No clipboard with valid blueprint",
+  "gui.create_qbp.empty_blueprint": "Blueprint has no materials",
+  "gui.create_qbp.materials": "Materials",
+  "key.create_qbp.move": "Toggle Edit Mode",
+  "key.categories.create_qbp": "Visual Blueprint Materials",
+  "key.create_qbp.move_up": "Move Button Up",
+  "key.create_qbp.move_down": "Move Button Down",
+  "key.create_qbp.move_left": "Move Button Left",
+  "key.create_qbp.move_right": "Move Button Right"
+}

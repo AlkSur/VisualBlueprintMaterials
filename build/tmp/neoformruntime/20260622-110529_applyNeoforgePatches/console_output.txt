@@ -1,0 +1,29 @@
+--------------------------------------------------------------------------------
+
+Command-Line:
+ - D:\Software\Java\java 21\bin\java.exe
+ - -jar
+ - D:\GradleCache\caches\modules-2\files-2.1\io.codechicken\DiffPatch\2.0.0.36\5b32f9baa0c0371c0dc80a3b88794960af0c6b44\DiffPatch-2.0.0.36-all.jar
+ - D:\GradleCache\caches\neoformruntime\intermediate_results\patch_0cdcc5f71509ef40282ca11bfe642d4074062397_output.zip
+ - D:\GradleCache\caches\modules-2\files-2.1\net.neoforged\neoforge\21.1.234\d41317c6b5b8c786fa11a2228a9f631eeded25c1\neoforge-21.1.234-userdev.jar
+ - --prefix
+ - patches/
+ - --patch
+ - --archive
+ - ZIP
+ - --output
+ - ./output.zip
+ - --log-level
+ - WARN
+ - --mode
+ - OFFSET
+ - --archive-rejects
+ - ZIP
+ - --reject
+ - ./outputRejects.zip
+ - --base-path-prefix
+ - a/
+ - --modified-path-prefix
+ - b/
+--------------------------------------------------------------------------------
+

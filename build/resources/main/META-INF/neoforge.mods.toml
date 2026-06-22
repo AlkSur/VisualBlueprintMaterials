@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="create_qbp"
+version="1.1.0"
+displayName="Visual Blueprint Materials"
+authors="AlkSur"
+description="Displays a visual material list and inventory tracking for Create blueprints directly on container and inventory screens."
+logoFile="logo.png"
+
+[[dependencies.create_qbp]]
+    modId="neoforge"
+    mandatory=true
+    versionRange="[21,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.create_qbp]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.21.1,1.22)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.create_qbp]]
+    modId="create"
+    mandatory=true
+    versionRange="[6,)"
+    ordering="NONE"
+    side="BOTH"
