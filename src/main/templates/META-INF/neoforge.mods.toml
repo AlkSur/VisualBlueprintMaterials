@@ -9,6 +9,7 @@ displayName="${mod_name}"
 authors="${mod_authors}"
 description="${mod_description}"
 logoFile="logo.png"
+displayTest="IGNORE_ALL_VERSION"
 
 [[dependencies.${mod_id}]]
     modId="neoforge"

@@ -6,7 +6,6 @@ Any commercial deployment or commercial derivative development requires official
 */
 package org.kdvcs.vbm;
 
-import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -16,13 +15,10 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.kdvcs.vbm.client.GuiOverlay;
 import org.kdvcs.vbm.config.VBMConfig;
-import org.slf4j.Logger;
 
 @Mod(VisualBlueprintMaterials.MOD_ID)
 public class VisualBlueprintMaterials {
     public static final String MOD_ID = "create_qbp";
-    public static final Logger LOGGER = LogUtils.getLogger();
-
     public VisualBlueprintMaterials(IEventBus modBus, ModContainer container) {
         container.registerConfig(ModConfig.Type.CLIENT, VBMConfig.SPEC, MOD_ID + "-client.toml");
         modBus.addListener(this::onRegisterKeys);

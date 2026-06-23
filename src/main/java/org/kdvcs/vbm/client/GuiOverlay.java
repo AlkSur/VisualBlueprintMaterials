@@ -16,16 +16,21 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.ScreenEvent;
-import org.kdvcs.vbm.VisualBlueprintMaterials;
 import org.kdvcs.vbm.config.VBMConfig;
 import org.kdvcs.vbm.util.ClipboardReader;
 import org.kdvcs.vbm.util.InventoryCounter;
 import org.lwjgl.glfw.GLFW;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GuiOverlay {
 
@@ -81,29 +86,113 @@ public class GuiOverlay {
         if (mc.player == null) { mats = List.of(); return; }
         ItemStack cb = ClipboardReader.findClipboard(mc.player);
         mats = cb.isEmpty() ? List.of() : ClipboardReader.readMaterials(cb);
-        applyIgnored(mc.player);
+        String fp = blueprintFingerprint(cb);
+        restoreRequiredCounts(fp);
+        applyIgnoredFromFile(fp);
     }
 
     private String blueprintFingerprint(net.minecraft.world.item.ItemStack clipboard) {
         java.util.List<ClipboardReader.MaterialEntry> all = ClipboardReader.readMaterials(clipboard);
-        StringBuilder sb = new StringBuilder();
-        for (ClipboardReader.MaterialEntry e : all) sb.append(e.pageIndex).append(',').append(e.entryIndex).append('|');
-        return Integer.toHexString(sb.toString().hashCode());
+        java.util.TreeSet<String> ids = new java.util.TreeSet<>();
+        for (ClipboardReader.MaterialEntry e : all)
+            ids.add(BuiltInRegistries.ITEM.getKey(e.stack.getItem()).toString());
+        return Integer.toHexString(String.join(",", ids).hashCode());
     }
 
-    private void applyIgnored(net.minecraft.world.entity.player.Player player) {
-        net.minecraft.nbt.CompoundTag vbm = player.getPersistentData().getCompound(VisualBlueprintMaterials.MOD_ID);
-        String fp = blueprintFingerprint(ClipboardReader.findClipboard(player));
+    @SuppressWarnings("unchecked")
+    private void applyIgnoredFromFile(String fp) {
+        Map<String, Boolean> map = loadIgnoreMap();
         for (ClipboardReader.MaterialEntry e : mats) {
-            e.ignored = vbm.getBoolean("ign_" + fp + '_' + e.pageIndex + '_' + e.entryIndex);
+            String key = BuiltInRegistries.ITEM.getKey(e.stack.getItem()).toString();
+            e.ignored = map.getOrDefault(fp + ":" + key, false);
         }
     }
 
-    private void saveIgnored(net.minecraft.world.entity.player.Player player, int page, int entry, boolean ignored) {
-        net.minecraft.nbt.CompoundTag vbm = player.getPersistentData().getCompound(VisualBlueprintMaterials.MOD_ID);
+    @SuppressWarnings("unchecked")
+    private void saveIgnored(net.minecraft.world.entity.player.Player player, net.minecraft.world.item.ItemStack item, boolean ignored) {
         String fp = blueprintFingerprint(ClipboardReader.findClipboard(player));
-        vbm.putBoolean("ign_" + fp + '_' + page + '_' + entry, ignored);
-        player.getPersistentData().put(VisualBlueprintMaterials.MOD_ID, vbm);
+        String key = BuiltInRegistries.ITEM.getKey(item.getItem()).toString();
+        Map<String, Boolean> map = loadIgnoreMap();
+        if (ignored) map.put(fp + ":" + key, true);
+        else map.remove(fp + ":" + key);
+        saveIgnoreMap(map);
+    }
+
+    private Path ignoreFile() {
+        return net.minecraft.client.Minecraft.getInstance().gameDirectory.toPath()
+            .resolve("VisualBlueprintMaterials").resolve("ignored.json");
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Boolean> loadIgnoreMap() {
+        try {
+            Path p = ignoreFile();
+            if (Files.exists(p)) {
+                String json = Files.readString(p);
+                Map<String, Boolean> map = new Gson().fromJson(json, new TypeToken<Map<String, Boolean>>(){}.getType());
+                return map != null ? map : new HashMap<>();
+            }
+        } catch (Exception ignored) {}
+        return new HashMap<>();
+    }
+
+    private void saveIgnoreMap(Map<String, Boolean> map) {
+        try {
+            Path p = ignoreFile();
+            Files.createDirectories(p.getParent());
+            Files.writeString(p, new Gson().toJson(map));
+        } catch (Exception ignored) {}
+    }
+
+    // ---- Required count cache (Create zeroes item_amount for checked items) ----
+    private Path requiredFile() {
+        return net.minecraft.client.Minecraft.getInstance().gameDirectory.toPath()
+            .resolve("VisualBlueprintMaterials").resolve("required_cache.json");
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Map<String, Integer>> loadRequiredCache() {
+        try {
+            Path p = requiredFile();
+            if (Files.exists(p)) {
+                String json = Files.readString(p);
+                Map<String, Map<String, Integer>> map = new Gson().fromJson(json,
+                    new TypeToken<Map<String, Map<String, Integer>>>(){}.getType());
+                return map != null ? map : new HashMap<>();
+            }
+        } catch (Exception ignored) {}
+        return new HashMap<>();
+    }
+
+    private void saveRequiredCache(Map<String, Map<String, Integer>> cache) {
+        try {
+            Path p = requiredFile();
+            Files.createDirectories(p.getParent());
+            Files.writeString(p, new Gson().toJson(cache));
+        } catch (Exception ignored) {}
+    }
+
+    private void restoreRequiredCounts(String fp) {
+        Map<String, Map<String, Integer>> cache = loadRequiredCache();
+        Map<String, Integer> forFp = cache.computeIfAbsent(fp, k -> new HashMap<>());
+        boolean updated = false;
+        for (ClipboardReader.MaterialEntry e : mats) {
+            String id = BuiltInRegistries.ITEM.getKey(e.stack.getItem()).toString();
+            if (!e.checked && e.required > 0) {
+                // Cache the original required count before Create zeroes it
+                forFp.put(id, e.required);
+                updated = true;
+            } else if (e.checked && e.required == 0 && forFp.containsKey(id)) {
+                // Restore from cache
+                int orig = forFp.get(id);
+                e.required = orig;
+                e.stack = new net.minecraft.world.item.ItemStack(e.stack.getItem(), orig);
+            }
+        }
+        if (updated) {
+            cache.put(fp, forFp);
+            saveRequiredCache(cache);
+        }
     }
 
     private int[] btnPos(Screen screen) {
@@ -113,15 +202,19 @@ public class GuiOverlay {
     }
 
     private int[] panelPos(Screen screen, int cx, int cy, int ph) {
-        int px;
+        int px, py;
         if (screen instanceof AbstractContainerScreen<?> acs) {
             px = acs.getGuiLeft() - PW - 4;
-            if (px < 30) px = 30;
+            py = Math.max(2, Math.min(acs.getGuiTop() + by, screen.height - ph - 2));
+            if (VBMConfig.movePanelX) px = cx - PW - BS - 4;
+            if (VBMConfig.movePanelY) py = Math.max(2, Math.min(cy, screen.height - ph - 2));
         } else {
-            px = cx + BS + 2;
-            if (px + PW > screen.width) px = Math.max(30, screen.width - PW - 2);
+            px = cx - PW - BS - 4;
+            py = Math.max(2, Math.min(cy, screen.height - ph - 2));
         }
-        return new int[]{px, Math.max(0, Math.min(cy, screen.height - ph))};
+        if (px < 2) px = 2;
+        if (px + PW > screen.width) px = screen.width - PW - 2;
+        return new int[]{px, py};
     }
 
     // ========== Render ==========
@@ -206,7 +299,8 @@ public class GuiOverlay {
             g.fill(px + 4, ey + 12, px + 16, ey + 13, 0xFF888888);
             g.fill(px + 4, ey + 1, px + 5, ey + 13, 0xFF888888);
             g.fill(px + 15, ey + 1, px + 16, ey + 13, 0xFF888888);
-            if (e.ignored) g.drawString(mc.font, "\u2713", px + 6, ey + 2, 0xFFFFFFFF, false);
+            if (e.checked) g.drawString(mc.font, "\u2713", px + 6, ey + 2, 0xFF55FF55, false);
+            else if (e.ignored) g.drawString(mc.font, "\u2713", px + 6, ey + 2, 0xFFFFFFFF, false);
 
             g.fill(px + 20, ey + 1, px + 38, ey + 19, 0xFF888888);
             g.fill(px + 19, ey, px + 39, ey + 1, 0xFF555555);
@@ -216,14 +310,15 @@ public class GuiOverlay {
             g.renderFakeItem(e.stack, px + 21, ey + 2);
 
             boolean met = have >= e.required;
-            int color = e.ignored ? 0xFF555555 : (met ? 0xFF55FF55 : 0xFFFF5555);
+            int color = e.checked ? 0xFF55FF55 : (e.ignored ? 0xFF555555 : (met ? 0xFF55FF55 : 0xFFFF5555));
             String name = e.stack.getHoverName().getString();
             if (name.length() > 11) name = name.substring(0, 10) + "..";
-            g.drawString(mc.font, name, px + 42, ey + 6, e.ignored ? 0xFF555555 : 0xFFFFFFFF, false);
+            g.drawString(mc.font, name, px + 42, ey + 6, e.checked ? 0xFF55FF55 : (e.ignored ? 0xFF555555 : 0xFFFFFFFF), false);
             g.drawString(mc.font, "x" + e.required, px + PW - 56, ey + 6, color, false);
             g.drawString(mc.font, String.valueOf(have), px + PW - 18, ey + 6, color, false);
 
-            if (e.ignored) g.fill(px + 18, ey + 10, px + PW - 2, ey + 11, 0xFF555555);
+            if (e.checked) g.fill(px + 18, ey + 10, px + PW - 2, ey + 11, 0xFF55FF55);
+            else if (e.ignored) g.fill(px + 18, ey + 10, px + PW - 2, ey + 11, 0xFF555555);
             if (mx >= px + 4 && mx <= px + PW - 2 && my >= ey && my <= ey + EH && !chHv)
                 g.renderTooltip(mc.font, Component.literal(e.stack.getHoverName().getString() + " x" + e.required), mx, my);
         }
@@ -245,7 +340,8 @@ public class GuiOverlay {
 
         // Button click
         if (mx >= cx && mx <= cx + BS && my >= cy && my <= cy + BS) {
-            if (hasClipboard()) { refresh(); open = !open; scrollOffset = 0; }
+            if (hasClipboard()) { refresh();
+            open = !open; scrollOffset = 0; }
             event.setCanceled(true); return;
         }
         if (!open || mats.isEmpty()) return;
@@ -268,7 +364,7 @@ public class GuiOverlay {
             int ey = listY + i * EH;
             if (mx >= px + 4 && mx <= px + 16 && my >= ey + 1 && my <= ey + 13) {
                 e.ignored = !e.ignored;
-                saveIgnored(Minecraft.getInstance().player, e.pageIndex, e.entryIndex, e.ignored);
+                saveIgnored(Minecraft.getInstance().player, e.stack, e.ignored);
                 event.setCanceled(true); return;
             }
             if (mx >= px + 18 && mx <= px + PW - 2 && my >= ey && my <= ey + EH)
@@ -295,13 +391,15 @@ public class GuiOverlay {
     // ========== Closing / Init ==========
     @SubscribeEvent
     public void onScreenClosing(ScreenEvent.Closing event) {
+        editMode = false;
         if (!locked) { open = false; scrollOffset = 0; }
     }
 
     @SubscribeEvent
     public void onScreenInit(ScreenEvent.Init.Post event) {
         if (locked && event.getScreen() instanceof AbstractContainerScreen && hasClipboard()) {
-            refresh(); open = true;
+            refresh();
+            open = true;
         }
     }
 

@@ -8,5 +8,7 @@
   "key.create_qbp.move_up": "Move Button Up",
   "key.create_qbp.move_down": "Move Button Down",
   "key.create_qbp.move_left": "Move Button Left",
-  "key.create_qbp.move_right": "Move Button Right"
+  "key.create_qbp.move_right": "Move Button Right",
+  "config.create_qbp.button.movePanelX": "Moving button left/right also moves panel",
+  "config.create_qbp.button.movePanelY": "Moving button up/down also moves panel"
 }

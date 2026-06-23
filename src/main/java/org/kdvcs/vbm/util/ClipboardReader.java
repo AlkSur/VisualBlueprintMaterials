@@ -77,7 +77,32 @@ public class ClipboardReader {
                 int count = 0;
                 if (entry.contains("item_amount")) count = entry.getInt("item_amount");
                 else if (entry.contains("ItemAmount")) count = entry.getInt("ItemAmount");
-                if (count <= 0) continue; // skip placeholders
+                // Skip placeholders, but keep Create-checked items (count zeroed by cannon)
+                if (count <= 0) {
+                    // Try to recover original required count from text hint
+                    // Create preserves "+N" in text.extra even after zeroing item_amount
+                    // Works for both checked items (cannon satisfied) and unchecked items (cannon un-check pending)
+                    if (entry.contains("text")) {
+                        Tag textTag = entry.get("text");
+                        if (textTag instanceof CompoundTag textCt && textCt.contains("extra")) {
+                            Tag extraTag = textCt.get("extra");
+                            if (extraTag instanceof ListTag extra) {
+                                for (int k = extra.size() - 1; k >= 0; k--) {
+                                    if (extra.get(k) instanceof CompoundTag part && part.contains("text")) {
+                                        String txt = part.getString("text");
+                                        int plusIdx = txt.lastIndexOf('+');
+                                        if (plusIdx >= 0) {
+                                            try { count = Integer.parseInt(txt.substring(plusIdx + 1).trim()); } catch (Exception ignored) {}
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Still 0 after text parsing -> truly a placeholder (empty icon, >>>)
+                    if (count <= 0) continue;
+                }
 
                 ResourceLocation rl = ResourceLocation.tryParse(itemId);
                 if (rl == null) continue;
@@ -87,6 +112,7 @@ public class ClipboardReader {
                 MaterialEntry me = new MaterialEntry();
                 me.stack = new ItemStack(item, count);
                 me.required = count;
+                me.checked = entry.contains("checked") && entry.getByte("checked") == 1;
                 me.ignored = false;
                 me.pageIndex = i;
                 me.entryIndex = j;
@@ -126,6 +152,7 @@ public class ClipboardReader {
         public ItemStack stack;
         public int required;
         public boolean ignored;
+        public boolean checked;
         public int pageIndex, entryIndex;
     }
 }

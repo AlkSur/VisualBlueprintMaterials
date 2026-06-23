@@ -8,5 +8,7 @@
   "key.create_qbp.move_up": "按钮上移",
   "key.create_qbp.move_down": "按钮下移",
   "key.create_qbp.move_left": "按钮左移",
-  "key.create_qbp.move_right": "按钮右移"
+  "key.create_qbp.move_right": "按钮右移",
+  "config.create_qbp.button.movePanelX": "水平移动按钮时联动面板",
+  "config.create_qbp.button.movePanelY": "垂直移动按钮时联动面板"
 }
